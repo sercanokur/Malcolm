@@ -1,4 +1,4 @@
-FROM docker.elastic.co/beats/filebeat-oss:9.4.1
+FROM docker.elastic.co/beats/filebeat-oss:9.4.2
 
 # Copyright (c) 2026 Battelle Energy Alliance, LLC.  All rights reserved.
 LABEL maintainer="malcolm@inl.gov"
@@ -72,7 +72,7 @@ ARG FILEBEAT_SYSLOG_TCP_LISTEN=false
 ARG FILEBEAT_SYSLOG_UDP_LISTEN=false
 ARG PCAP_NODE_NAME=malcolm
 
-ENV SUPERCRONIC_VERSION="0.2.45"
+ENV SUPERCRONIC_VERSION="0.2.46"
 ENV SUPERCRONIC_URL="https://github.com/aptible/supercronic/releases/download/v$SUPERCRONIC_VERSION/supercronic-linux-"
 ENV SUPERCRONIC_CRONTAB="/etc/crontab"
 
@@ -102,6 +102,8 @@ RUN export EVTXARCH=$(uname -m | sed 's/arm64/aarch64/') && \
         file \
         gzip \
         inotify-tools \
+        libarchive \
+        lzip \
         jo \
         jq \
         openssl \
@@ -112,9 +114,9 @@ RUN export EVTXARCH=$(uname -m | sed 's/arm64/aarch64/') && \
         python3-setuptools \
         rsync \
         tar \
+        unrar \
         unzip \
-        xz \
-        xz-devel && \
+        xz && \
     curl -sSLf -o /usr/bin/tini "${TINI_URL}-${BINARCH}" && \
         chmod +x /usr/bin/tini && \
     python3 -m pip install --upgrade pip setuptools wheel && \
